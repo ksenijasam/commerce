@@ -6,7 +6,7 @@ from django.urls import reverse
 from .forms import ListingForm
 from .models import Listing
 
-from .models import User
+from .models import User, Watchlist, User
 
 
 def index(request):
@@ -84,3 +84,19 @@ def create_listing(request):
         return render(request, "auctions/create_listing.html", {
             'form': form
         })
+
+def listing(request, id):
+    if id is not None:
+        listing = Listing.objects.get(pk = id)
+        return render(request, "auctions/listing.html", {
+            'listing': listing
+        })
+
+def watchlist(request, id):
+    listing = Listing.objects.get(pk = id)
+    watchlist = Watchlist()
+    email = request.POST["email"]
+    print(email)
+    watchlist.user = User.objects.get(email = 'test@test.com')
+    watchlist.listing = listing
+    watchlist.save()

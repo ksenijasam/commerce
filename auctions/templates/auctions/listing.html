@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ listing.title }}</h2>
+
+    <div>
+        <div>{{ listing.description }}</div>
+        <div>{{ listing.starting_bid }}</div>
+        <div><img src="{{ listing.url }}" alt="product"></div>
+
+        <div>
+            <a href="{%url 'watchlist' listing.pk %}"><button type="button" class="btn btn-success">Add to Watchlist</button></a>
+        </div>
+    </div>
+
+{% endblock %}
