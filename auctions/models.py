@@ -28,6 +28,7 @@ class Listing(models.Model):
     url = models.URLField(null=True)
     category = models.CharField(choices=CATEGORY_CHOICES, null=True, max_length=15)
     date = models.DateField(auto_now=True)
+    active = models.BooleanField(default=True)
 
 class Bids(models.Model):
     bid = models.FloatField()
