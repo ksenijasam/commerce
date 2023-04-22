@@ -10,3 +10,4 @@ class ListingForm(forms.ModelForm):
         labels = {
             'url': 'Image URL:'
         }
+        required = ('title', 'description', 'starting_bid')

@@ -4,12 +4,21 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .forms import ListingForm
+from .models import Listing
 
 from .models import User
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    listings = Listing.objects.all().filter(active=True)
+    if(listings is None):
+        return render(request, "auctions/index.html", {
+            'no_listings': 'Currently there are no available listings. Be free to join community and create your own listing!'
+        })
+
+    return render(request, "auctions/index.html", {
+        'listings': listings
+    })
 
 
 def login_view(request):

@@ -1,3 +1,7 @@
 body {
     padding: 10px;
 }
+
+.no_listings {
+    margin: 3rem 3rem;
+}
