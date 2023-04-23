@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from .forms import ListingForm
 from .models import Listing
+from django.contrib.auth.decorators import login_required
 
 from .models import User, Watchlist, User
 
@@ -120,3 +121,9 @@ def watchlist(request, id, action):
             'listing': listing,
             'added_to_watchlist': False
         })
+
+@login_required
+def bid(request, id):
+    if request.method == 'POST':
+        bid = request.POST.get('bid')
+        print(bid)

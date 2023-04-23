@@ -17,6 +17,15 @@
                 <a href="{%url 'watchlist' listing.pk 'add'%}"><button type="button" class="btn btn-success">Add to Watchlist</button></a>
             </div>
         {% endif %}
+
+        {% if user.is_authenticated %}
+            <form action="{% url 'bid' listing.pk %}" method="post">
+                {% csrf_token %}
+                <h3>Bid on this item:</h3>
+                <input type="number" class="form-control" name="bid">
+                <button type="submit" class="btn btn-success">Place a Bid</button>
+            </form>
+        {% endif %}
     </div>
 
 {% endblock %}
