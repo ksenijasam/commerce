@@ -88,17 +88,35 @@ def create_listing(request):
 def listing(request, id):
     if id is not None:
         listing = Listing.objects.get(pk = id)
-        return render(request, "auctions/listing.html", {
-            'listing': listing
+
+        if Watchlist.objects.filter(listing = listing).exists():
+            return render(request, "auctions/listing.html", {
+            'listing': listing,
+            'on_watchlist': True
         })
 
-def watchlist(request, id):
+
+        return render(request, "auctions/listing.html", {
+            'listing': listing,
+            'on_watchlist': False
+        })
+
+def watchlist(request, id, action):
     if id is not None:
         watchlist = Watchlist()
-        watchlist.user = User.objects.get(pk = request.user.pk)
-        watchlist.listing = Listing.objects.get(pk = id)
-        watchlist.save()
+        listing = Listing.objects.get(pk = id)
+        user = User.objects.get(pk = request.user.pk)
+        if action == 'add':
+            watchlist.user = user
+            watchlist.listing = listing
+            watchlist.save()
+            return render(request, "auctions/listing.html", {
+                'listing': listing,
+                'added_to_watchlist': True
+            })
+        
+        Watchlist.objects.filter(listing = listing, user = user).delete()
         return render(request, "auctions/listing.html", {
-            'listing': Listing.objects.get(pk = id),
-            'added_to_watchlist': True
+            'listing': listing,
+            'added_to_watchlist': False
         })
