@@ -93,10 +93,12 @@ def listing(request, id):
         })
 
 def watchlist(request, id):
-    listing = Listing.objects.get(pk = id)
-    watchlist = Watchlist()
-    email = request.POST["email"]
-    print(email)
-    watchlist.user = User.objects.get(email = 'test@test.com')
-    watchlist.listing = listing
-    watchlist.save()
+    if id is not None:
+        watchlist = Watchlist()
+        watchlist.user = User.objects.get(pk = request.user.pk)
+        watchlist.listing = Listing.objects.get(pk = id)
+        watchlist.save()
+        return render(request, "auctions/listing.html", {
+            'listing': Listing.objects.get(pk = id),
+            'added_to_watchlist': True
+        })

@@ -1,3 +1,8 @@
 auctions/migrations/__pycache__/
 db.sqlite3
 auctions/__pycache__/
+auctions/__pycache__/forms.cpython-311.pyc
+auctions/__pycache__/urls.cpython-311.pyc
+auctions/__pycache__/views.cpython-311.pyc
+auctions/__pycache__/models.cpython-311.pyc
+
