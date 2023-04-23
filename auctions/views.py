@@ -76,8 +76,10 @@ def register(request):
 def create_listing(request):
     if request.method == 'POST':
         form = ListingForm(request.POST)
+        user = User.objects.get(pk = request.user.pk)
 
         if form.is_valid():
+            form.instance.user = user
             form.save()
             return HttpResponseRedirect(reverse("index"))
     else:

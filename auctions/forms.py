@@ -6,7 +6,7 @@ class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
         fields = '__all__'
-        exclude = ['date', 'active']
+        exclude = ['date', 'active', 'user']
         labels = {
             'url': 'Image URL:'
         }
