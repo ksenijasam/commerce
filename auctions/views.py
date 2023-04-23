@@ -7,7 +7,7 @@ from .forms import ListingForm
 from .models import Listing
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Watchlist, User
+from .models import User, Watchlist, User, Bids
 
 
 def index(request):
@@ -89,23 +89,27 @@ def create_listing(request):
 def listing(request, id):
     if id is not None:
         listing = Listing.objects.get(pk = id)
+        bids = Bids.objects.all().filter(listing = listing)
 
         if Watchlist.objects.filter(listing = listing).exists():
             return render(request, "auctions/listing.html", {
             'listing': listing,
-            'on_watchlist': True
+            'on_watchlist': True,
+            'bids': bids
         })
 
 
         return render(request, "auctions/listing.html", {
             'listing': listing,
-            'on_watchlist': False
+            'on_watchlist': False,
+            'bids': bids
         })
 
 def watchlist(request, id, action):
     if id is not None:
         watchlist = Watchlist()
         listing = Listing.objects.get(pk = id)
+        bids = Bids.objects.all().filter(listing = listing)
         user = User.objects.get(pk = request.user.pk)
         if action == 'add':
             watchlist.user = user
@@ -113,17 +117,50 @@ def watchlist(request, id, action):
             watchlist.save()
             return render(request, "auctions/listing.html", {
                 'listing': listing,
-                'added_to_watchlist': True
+                'added_to_watchlist': True,
+                'bids': bids
             })
         
         Watchlist.objects.filter(listing = listing, user = user).delete()
         return render(request, "auctions/listing.html", {
             'listing': listing,
-            'added_to_watchlist': False
+            'added_to_watchlist': False,
+            'bids': bids
         })
 
 @login_required
 def bid(request, id):
-    if request.method == 'POST':
+    if request.method == 'POST' and id is not None:
+        listing = Listing.objects.get(pk = id)
+        bids = Bids.objects.all().filter(listing = listing)
+        user = User.objects.get(pk = request.user.pk)
         bid = request.POST.get('bid')
-        print(bid)
+
+        for item in bids:
+            if float(item.bid) >= float(bid):
+                return render(request, "auctions/listing.html", {
+                'listing': listing,
+                'error_other_user': True,
+                'bids': bids
+            })
+                
+        if float(listing.starting_bid) >= float(bid):
+            return render(request, "auctions/listing.html", {
+                'listing': listing,
+                'error_owner': True,
+                'bids': bids
+            })
+
+        bids = Bids()
+        bids.bid = float(bid)
+        bids.listing = listing
+        bids.user = user
+        bids.save()
+
+        return render(request, "auctions/listing.html", {
+            'listing': listing
+        })
+
+
+
+

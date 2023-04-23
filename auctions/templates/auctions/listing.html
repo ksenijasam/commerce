@@ -8,6 +8,12 @@
         <div>{{ listing.starting_bid }}</div>
         <div><img src="{{ listing.url }}" alt="product"></div>
 
+        <div>
+            {% for bid in bids %}
+                <div> {{ bid.bid }} bid placed by {{ bid.user }} </div>
+            {% endfor %}
+        </div>
+
         {% if added_to_watchlist or on_watchlist %}
             <div>
                 <a href="{%url 'watchlist' listing.pk 'delete'%}"><button type="button" class="btn btn-danger">Remove from Watchlist</button></a>
@@ -25,6 +31,20 @@
                 <input type="number" class="form-control" name="bid">
                 <button type="submit" class="btn btn-success">Place a Bid</button>
             </form>
+
+            {% if error_owner %}
+                <h3>
+                    Looks like your bid is less than starting value set by owner. <br>
+                    So, uh, consindering that owner might not appreciate that, maybe 
+                    place new bid ?
+                </h3>
+            {% elif error_other_user %}
+                <h3>
+                    So, how to put this... Other user made bid larger than one you placed <br>
+                    and it will be hard to convince owner to look at bids lower than that... <br>
+                    Should you try placing higher bid ?
+                </h3>
+            {% endif %}    
         {% endif %}
     </div>
 
