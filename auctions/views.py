@@ -175,6 +175,18 @@ def bid(request, id):
 
 @login_required
 def close_listing(request, id):
-    pass
+    if id is not None:
+        listing = Listing.objects.get(pk = id)
+        bids = Bids.objects.all().filter(listing = listing)
+
+        listing.active = False
+        listing.save()
+
+        return render(request, "auctions/listing.html", {
+            'listing': listing,
+            'added_to_watchlist': False, #not good, watchlist should be removed altogether if
+            'bids': bids,                #item is closed                    
+            'its_creator': False
+        })
 
 

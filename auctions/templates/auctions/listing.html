@@ -10,7 +10,7 @@
 
         {% if its_creator %}
             <div>
-                <a href="">
+                <a href="{% url 'close_listing' listing.pk %}">
                     <button class="btn btn-info" type="button">Close this Listing</button>
                 </a>
             </div>
@@ -26,7 +26,7 @@
             <div>
                 <a href="{%url 'watchlist' listing.pk 'delete'%}"><button type="button" class="btn btn-danger">Remove from Watchlist</button></a>
             </div>
-        {% else %}
+        {% elif not on_watchlist %}
             <div>
                 <a href="{%url 'watchlist' listing.pk 'add'%}"><button type="button" class="btn btn-success">Add to Watchlist</button></a>
             </div>
