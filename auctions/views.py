@@ -93,18 +93,25 @@ def listing(request, id):
         listing = Listing.objects.get(pk = id)
         bids = Bids.objects.all().filter(listing = listing)
 
+        its_creator = False
+
+        if request.user == listing.user:
+            its_creator = True
+
         if Watchlist.objects.filter(listing = listing).exists():
             return render(request, "auctions/listing.html", {
             'listing': listing,
             'on_watchlist': True,
-            'bids': bids
+            'bids': bids,
+            'its_creator': its_creator
         })
 
 
         return render(request, "auctions/listing.html", {
             'listing': listing,
             'on_watchlist': False,
-            'bids': bids
+            'bids': bids,
+            'its_creator': its_creator
         })
 
 def watchlist(request, id, action):
@@ -159,10 +166,15 @@ def bid(request, id):
         bids.user = user
         bids.save()
 
+        bids = Bids.objects.all().filter(listing = listing)
+
         return render(request, "auctions/listing.html", {
-            'listing': listing
+            'listing': listing,
+            'bids': bids
         })
 
-
+@login_required
+def close_listing(request, id):
+    pass
 
 

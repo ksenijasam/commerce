@@ -8,6 +8,14 @@
         <div>{{ listing.starting_bid }}</div>
         <div><img src="{{ listing.url }}" alt="product"></div>
 
+        {% if its_creator %}
+            <div>
+                <a href="">
+                    <button class="btn btn-info" type="button">Close this Listing</button>
+                </a>
+            </div>
+        {% endif %}
+
         <div>
             {% for bid in bids %}
                 <div> {{ bid.bid }} bid placed by {{ bid.user }} </div>
