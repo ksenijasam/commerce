@@ -6,6 +6,7 @@ from django.urls import reverse
 from .forms import ListingForm
 from .models import Listing
 from django.contrib.auth.decorators import login_required
+from django.db.models import Max
 
 from .models import User, Watchlist, User, Bids
 
@@ -179,6 +180,13 @@ def close_listing(request, id):
         listing = Listing.objects.get(pk = id)
         bids = Bids.objects.all().filter(listing = listing)
 
+        max_bid = bids.aggregate(Max('bid'))['bid__max']
+        
+        winning_bid = bids.get(bid = max_bid)
+        winning_user = winning_bid.user
+        winner = User.objects.get(pk = winning_user.pk)
+
+        listing.winner_id = winner.pk
         listing.active = False
         listing.save()
 

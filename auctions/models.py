@@ -30,6 +30,7 @@ class Listing(models.Model):
     date = models.DateField(auto_now=True)
     active = models.BooleanField(default=True)
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'user_listing', null=True)
+    winner_id = models.IntegerField(null=True, blank=True)
 
 class Bids(models.Model):
     bid = models.FloatField()
