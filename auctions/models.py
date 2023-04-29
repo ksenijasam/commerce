@@ -38,7 +38,7 @@ class Bids(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'user_bids')
 
 class Comments(models.Model):
-    comment = models.CharField(max_length=250)
+    comment = models.TextField()
     listing = models.ForeignKey(Listing, on_delete = models.CASCADE, related_name = 'listing_comments')
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'user_comments')
 
