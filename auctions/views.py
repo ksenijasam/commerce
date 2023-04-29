@@ -205,4 +205,12 @@ def won_listings(request):
         'won_listing': won_listing
     })
 
+@login_required
+def won_listings_details(request, id):
+    won_listings_details = Listing.objects.get(pk = id)
+    
+    return render(request, "auctions/won_listing_details.html", {
+        'won_listings_details': won_listings_details
+    })
+
 

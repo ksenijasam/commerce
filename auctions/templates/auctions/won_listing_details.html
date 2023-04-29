@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+   <h1>This listing was won by you! Yeey!😄</h1>
+    <h2>{{ won_listings_details.title }}</h2>
+
+    <div>
+        <div>{{ won_listings_details.description }}</div>
+        <div>{{ won_listings_details.starting_bid }}</div>
+        <div><img src="{{ won_listings_details.url }}" alt="product"></div>
+    </div>
+
+{% endblock %}
