@@ -197,4 +197,12 @@ def close_listing(request, id):
             'its_creator': False
         })
 
+@login_required
+def won_listings(request):
+    won_listing = Listing.objects.all().filter(winner_id = request.user.pk)
+    
+    return render(request, "auctions/won_listings.html", {
+        'won_listing': won_listing
+    })
+
 
