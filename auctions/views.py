@@ -3,12 +3,12 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .forms import ListingForm
+from .forms import ListingForm, CommentsForm
 from .models import Listing
 from django.contrib.auth.decorators import login_required
 from django.db.models import Max
 
-from .models import User, Watchlist, User, Bids
+from .models import User, Watchlist, User, Bids, Comments
 
 
 def index(request):
@@ -94,6 +94,10 @@ def listing(request, id):
         listing = Listing.objects.get(pk = id)
         bids = Bids.objects.all().filter(listing = listing)
 
+        comments = Comments.objects.all().filter(listing = listing)
+
+        comment_form = CommentsForm()
+
         its_creator = False
 
         if request.user == listing.user:
@@ -104,7 +108,9 @@ def listing(request, id):
             'listing': listing,
             'on_watchlist': True,
             'bids': bids,
-            'its_creator': its_creator
+            'its_creator': its_creator,
+            'comment_form': comment_form,
+            'comments': comments
         })
 
 
@@ -112,7 +118,9 @@ def listing(request, id):
             'listing': listing,
             'on_watchlist': False,
             'bids': bids,
-            'its_creator': its_creator
+            'its_creator': its_creator,
+            'comment_form': comment_form,
+            'comments': comments
         })
 
 def watchlist(request, id, action):
@@ -128,14 +136,16 @@ def watchlist(request, id, action):
             return render(request, "auctions/listing.html", {
                 'listing': listing,
                 'added_to_watchlist': True,
-                'bids': bids
+                'bids': bids,
+                'comment_form': CommentsForm()
             })
         
         Watchlist.objects.filter(listing = listing, user = user).delete()
         return render(request, "auctions/listing.html", {
             'listing': listing,
             'added_to_watchlist': False,
-            'bids': bids
+            'bids': bids,
+            'comment_form': CommentsForm()
         })
 
 @login_required
@@ -146,19 +156,23 @@ def bid(request, id):
         user = User.objects.get(pk = request.user.pk)
         bid = request.POST.get('bid')
 
+        comment_form = CommentsForm()
+
         for item in bids:
             if float(item.bid) >= float(bid):
                 return render(request, "auctions/listing.html", {
                 'listing': listing,
                 'error_other_user': True,
-                'bids': bids
+                'bids': bids,
+                'comment_form': comment_form
             })
                 
         if float(listing.starting_bid) >= float(bid):
             return render(request, "auctions/listing.html", {
                 'listing': listing,
                 'error_owner': True,
-                'bids': bids
+                'bids': bids,
+                'comment_form': comment_form
             })
 
         bids = Bids()
@@ -171,7 +185,8 @@ def bid(request, id):
 
         return render(request, "auctions/listing.html", {
             'listing': listing,
-            'bids': bids
+            'bids': bids,
+            'comment_form': comment_form
         })
 
 @login_required
@@ -212,5 +227,27 @@ def won_listings_details(request, id):
     return render(request, "auctions/won_listing_details.html", {
         'won_listings_details': won_listings_details
     })
+
+@login_required
+def comments(request, id):
+    if request.method == 'POST':
+        user = User.objects.get(pk = request.user.pk)
+        listing = Listing.objects.get(pk = id)
+        comments = Comments.objects.all().filter(listing = listing)
+
+        comment_form = CommentsForm(request.POST)
+
+        if comment_form.is_valid():
+            comment_form.instance.listing = listing
+            comment_form.instance.user = user
+            comment_form.save()
+
+        return render(request, "auctions/listing.html", {
+            'listing': listing,
+            'comment_form': CommentsForm(),
+            'comments': comments
+        })
+
+
 
 

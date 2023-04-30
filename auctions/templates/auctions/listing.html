@@ -52,7 +52,29 @@
                     and it will be hard to convince owner to look at bids lower than that... <br>
                     Should you try placing higher bid ?
                 </h3>
-            {% endif %}    
+            {% endif %}
+
+            <div>
+                {% for comment in comments %}
+                    <div> <p>{{ comment.comment }} by {{ comment.user }}</p> </div>
+                {% endfor %}
+            </div>
+            
+            <form action="{% url 'comments' listing.pk %}" method="post">
+                {% csrf_token %}
+                <h2>Leave a Comment!</h2>
+                {% for field in comment_form %}
+                    <div class="form-group">
+                        <div>
+                            {{ field }}
+                        </div>
+                    </div>
+                {% endfor %}
+        
+                <div>
+                    <button class="btn btn-primary" type="submit">Comment</button>
+                </div>
+            </form>
         {% endif %}
     </div>
 
