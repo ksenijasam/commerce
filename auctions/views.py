@@ -140,7 +140,7 @@ def watchlist(request, id, action):
                 'comment_form': CommentsForm()
             })
         
-        Watchlist.objects.filter(listing = listing, user = user).delete()
+        # Watchlist.objects.filter(listing = listing, user = user).delete()
         return render(request, "auctions/listing.html", {
             'listing': listing,
             'added_to_watchlist': False,
@@ -248,6 +248,14 @@ def comments(request, id):
             'comments': comments
         })
 
+
+@login_required
+def watchlist_list(request):
+    watchlist_list = Watchlist.objects.all().filter(user = request.user.pk)
+    print(watchlist_list[0].listing.title)
+    return render(request, "auctions/watchlist.html", {
+        'watchlist_list': watchlist_list
+    })
 
 
 
