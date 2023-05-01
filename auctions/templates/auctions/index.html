@@ -8,7 +8,7 @@
     {% endif %}
 
     {% for listing in listings %} 
-        <a href="listing/{{ listing.pk }}" style="text-decoration:none">
+        <a href="{% url 'listing' listing.pk %}" style="text-decoration:none">
             <div style="margin: 2rem 0rem; border: 1px solid gray; color: initial">
                 <h3>{{ listing.title }}</h3>
                 <div>{{ listing.description }}</div>

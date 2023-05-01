@@ -252,9 +252,26 @@ def comments(request, id):
 @login_required
 def watchlist_list(request):
     watchlist_list = Watchlist.objects.all().filter(user = request.user.pk)
-    print(watchlist_list[0].listing.title)
     return render(request, "auctions/watchlist.html", {
         'watchlist_list': watchlist_list
+    })
+
+def categories(request):
+    categories = []
+
+    for category in Listing.CATEGORY_CHOICES:
+        categories.append(category)
+
+    return render(request, "auctions/categories.html", {
+        'categories': categories
+    })
+
+    
+def category(request, category):
+    category_listings = Listing.objects.filter(category = category)
+
+    return render(request, "auctions/index.html", {
+        'listings': category_listings
     })
 
 
