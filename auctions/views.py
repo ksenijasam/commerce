@@ -103,7 +103,7 @@ def listing(request, id):
         if request.user == listing.user:
             its_creator = True
 
-        if Watchlist.objects.filter(listing = listing).exists():
+        if Watchlist.objects.filter(listing = listing).exists() and request.user == listing.user:
             return render(request, "auctions/listing.html", {
             'listing': listing,
             'on_watchlist': True,
