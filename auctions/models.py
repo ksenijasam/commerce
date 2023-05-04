@@ -29,7 +29,7 @@ class Listing(models.Model):
     category = models.CharField(choices=CATEGORY_CHOICES, null=True, blank=True, max_length=15)
     date = models.DateField(auto_now=True)
     active = models.BooleanField(default=True)
-    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'user_listing', null=True)
+    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'user_listing')
     winner_id = models.IntegerField(null=True, blank=True)
 
 class Bids(models.Model):
