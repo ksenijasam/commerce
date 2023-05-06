@@ -105,23 +105,22 @@ def listing(request, id):
 
         if Watchlist.objects.filter(listing = listing).exists() and request.user == listing.user:
             return render(request, "auctions/listing.html", {
-            'listing': listing,
-            'on_watchlist': True,
-            'bids': bids,
-            'its_creator': its_creator,
-            'comment_form': comment_form,
-            'comments': comments
-        })
-
-
-        return render(request, "auctions/listing.html", {
-            'listing': listing,
-            'on_watchlist': False,
-            'bids': bids,
-            'its_creator': its_creator,
-            'comment_form': comment_form,
-            'comments': comments
-        })
+                'listing': listing,
+                'on_watchlist': True,
+                'bids': bids,
+                'its_creator': its_creator,
+                'comment_form': comment_form,
+                'comments': comments
+            })
+        else:
+            return render(request, "auctions/listing.html", {
+                'listing': listing,
+                'on_watchlist': False,
+                'bids': bids,
+                'its_creator': its_creator,
+                'comment_form': comment_form,
+                'comments': comments
+            })
 
 def watchlist(request, id, action):
     if id is not None:
@@ -139,14 +138,14 @@ def watchlist(request, id, action):
                 'bids': bids,
                 'comment_form': CommentsForm()
             })
-        
-        # Watchlist.objects.filter(listing = listing, user = user).delete()
-        return render(request, "auctions/listing.html", {
-            'listing': listing,
-            'added_to_watchlist': False,
-            'bids': bids,
-            'comment_form': CommentsForm()
-        })
+        else:
+            Watchlist.objects.filter(listing = listing, user = user).delete()
+            return render(request, "auctions/listing.html", {
+                'listing': listing,
+                'added_to_watchlist': False,
+                'bids': bids,
+                'comment_form': CommentsForm()
+            })
 
 @login_required
 def bid(request, id):

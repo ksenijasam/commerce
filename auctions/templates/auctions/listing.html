@@ -9,11 +9,11 @@
     <div><img src="{{ listing.url }}" alt="product"></div>
 
     {% if its_creator %}
-    <div>
-        <a href="{% url 'close_listing' listing.pk %}">
-            <button class="btn btn-info" type="button">Close this Listing</button>
-        </a>
-    </div>
+        <div>
+            <a href="{% url 'close_listing' listing.pk %}">
+                <button class="btn btn-info" type="button">Close this Listing</button>
+            </a>
+        </div>
     {% endif %}
 
     {% if user.is_authenticated %}
