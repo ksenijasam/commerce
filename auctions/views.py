@@ -129,7 +129,7 @@ def listing(request, id):
             })
 
 def watchlist(request, id, action):
-    if id is not None:
+    if id is not None and request.method == 'GET':
         watchlist = Watchlist()
         listing = Listing.objects.get(pk = id)
         bids = Bids.objects.all().filter(listing = listing)
@@ -143,20 +143,24 @@ def watchlist(request, id, action):
             watchlist.save()
             return render(request, "auctions/listing.html", {
                 'listing': listing,
-                'added_to_watchlist': True,
+                'on_watchlist': True,
                 'bids': bids,
                 'comment_form': CommentsForm(),
                 'its_creator': its_creator
             })
-        else:
+
+        elif action == 'delete':
             Watchlist.objects.filter(listing = listing, user = user).delete()
             return render(request, "auctions/listing.html", {
                 'listing': listing,
-                'added_to_watchlist': False,
+                'on_watchlist': False,
                 'bids': bids,
                 'comment_form': CommentsForm(),
                 'its_creator': its_creator
             })
+
+        return HttpResponseRedirect('/')
+            
 
 @login_required
 def bid(request, id):

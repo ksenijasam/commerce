@@ -23,16 +23,16 @@
             {% endfor %}
         </div>
 
-        {% if added_to_watchlist or on_watchlist %}
-        <div>
-            <a href="{%url 'watchlist' listing.pk 'delete'%}"><button type="button" class="btn btn-danger">Remove from
-                    Watchlist</button></a>
-        </div>
+        {% if on_watchlist %}
+            <div>
+                <a href="{%url 'watchlist' listing.pk 'delete'%}"><button type="button" class="btn btn-danger">Remove from
+                        Watchlist</button></a>
+            </div>
         {% elif not on_watchlist %}
-        <div>
-            <a href="{%url 'watchlist' listing.pk 'add'%}"><button type="button" class="btn btn-success">Add to
-                    Watchlist</button></a>
-        </div>
+            <div>
+                <a href="{%url 'watchlist' listing.pk 'add'%}"><button type="button" class="btn btn-success">Add to
+                        Watchlist</button></a>
+            </div>
         {% endif %}
 
 
