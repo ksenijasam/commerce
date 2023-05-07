@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h1>Successfully Closed Listing!</h1>
+
+    <h2>{{ listing.title }}</h2>
+
+    <div>{{ listing.description }}</div>
+    <div>{{ listing.starting_bid }}</div>
+    <div><img src="{{ listing.url }}" alt="product"></div>
+
+    {% if winner %}
+        <div>
+            Listing was won by {{ winner }}
+        </div>
+    {% endif %}
+
+
+{% endblock %}
