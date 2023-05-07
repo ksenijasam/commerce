@@ -74,6 +74,15 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+
+def check_is_creator(user, listing):
+    its_creator = False
+
+    if user.user == listing.user:
+        its_creator = True
+
+    return its_creator
+
 def create_listing(request):
     if request.method == 'POST':
         form = ListingForm(request.POST)
@@ -98,10 +107,7 @@ def listing(request, id):
 
         comment_form = CommentsForm()
 
-        its_creator = False
-
-        if request.user == listing.user:
-            its_creator = True
+        its_creator = check_is_creator(request, listing)
 
         if Watchlist.objects.filter(listing = listing).exists() and request.user == listing.user:
             return render(request, "auctions/listing.html", {
@@ -128,6 +134,9 @@ def watchlist(request, id, action):
         listing = Listing.objects.get(pk = id)
         bids = Bids.objects.all().filter(listing = listing)
         user = User.objects.get(pk = request.user.pk)
+
+        its_creator = check_is_creator(request, listing)
+
         if action == 'add':
             watchlist.user = user
             watchlist.listing = listing
@@ -136,7 +145,8 @@ def watchlist(request, id, action):
                 'listing': listing,
                 'added_to_watchlist': True,
                 'bids': bids,
-                'comment_form': CommentsForm()
+                'comment_form': CommentsForm(),
+                'its_creator': its_creator
             })
         else:
             Watchlist.objects.filter(listing = listing, user = user).delete()
@@ -144,7 +154,8 @@ def watchlist(request, id, action):
                 'listing': listing,
                 'added_to_watchlist': False,
                 'bids': bids,
-                'comment_form': CommentsForm()
+                'comment_form': CommentsForm(),
+                'its_creator': its_creator
             })
 
 @login_required
@@ -155,6 +166,8 @@ def bid(request, id):
         user = User.objects.get(pk = request.user.pk)
         bid = request.POST.get('bid')
 
+        its_creator = check_is_creator(request, listing)
+
         comment_form = CommentsForm()
 
         for item in bids:
@@ -163,7 +176,8 @@ def bid(request, id):
                 'listing': listing,
                 'error_other_user': True,
                 'bids': bids,
-                'comment_form': comment_form
+                'comment_form': comment_form,
+                'its_creator': its_creator
             })
                 
         if float(listing.starting_bid) >= float(bid):
@@ -171,7 +185,8 @@ def bid(request, id):
                 'listing': listing,
                 'error_owner': True,
                 'bids': bids,
-                'comment_form': comment_form
+                'comment_form': comment_form,
+                'its_creator': its_creator
             })
 
         bids = Bids()
@@ -185,7 +200,8 @@ def bid(request, id):
         return render(request, "auctions/listing.html", {
             'listing': listing,
             'bids': bids,
-            'comment_form': comment_form
+            'comment_form': comment_form,
+            'its_creator': its_creator
         })
 
 @login_required
@@ -244,10 +260,13 @@ def comments(request, id):
             comment_form.instance.user = user
             comment_form.save()
 
+        its_creator = check_is_creator(request, listing)
+
         return render(request, "auctions/listing.html", {
             'listing': listing,
             'comment_form': CommentsForm(),
-            'comments': comments
+            'comments': comments,
+            'its_creator': its_creator
         })
 
 
