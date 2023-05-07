@@ -191,16 +191,19 @@ def bid(request, id):
 @login_required
 def close_listing(request, id):
     if id is not None:
+        winner_id = None
         listing = Listing.objects.get(pk = id)
         bids = Bids.objects.all().filter(listing = listing)
 
         max_bid = bids.aggregate(Max('bid'))['bid__max']
-        
-        winning_bid = bids.get(bid = max_bid)
-        winning_user = winning_bid.user
-        winner = User.objects.get(pk = winning_user.pk)
 
-        listing.winner_id = winner.pk
+        if max_bid is not None:
+            winning_bid = bids.get(bid = max_bid)
+            winning_user = winning_bid.user
+            winner_id = winning_user.pk
+            winner = User.objects.get(pk = winner_id)
+
+        listing.winner_id = winner_id
         listing.active = False
         listing.save()
 
@@ -267,7 +270,7 @@ def categories(request):
 
     
 def category(request, category):
-    category_listings = Listing.objects.filter(category = category)
+    category_listings = Listing.objects.filter(category = category, active=True)
 
     return render(request, "auctions/index.html", {
         'listings': category_listings
