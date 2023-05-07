@@ -13,7 +13,8 @@ from .models import User, Watchlist, User, Bids, Comments
 
 def index(request):
     listings = Listing.objects.all().filter(active=True)
-    if(listings is None):
+
+    if not listings:
         return render(request, "auctions/index.html", {
             'no_listings': 'Currently there are no available listings. Be free to join community and create your own listing!'
         })
@@ -277,6 +278,7 @@ def comments(request, id):
 @login_required
 def watchlist_list(request):
     watchlist_list = Watchlist.objects.all().filter(user = request.user.pk)
+    
     return render(request, "auctions/watchlist.html", {
         'watchlist_list': watchlist_list
     })
