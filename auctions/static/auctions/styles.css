@@ -1,7 +1,35 @@
 body {
     padding: 10px;
+    background-color: #001A23;
+    color: #A2E3C4;
+    font-family: 'Open Sans', sans-serif;
 }
 
-.no_listings {
+.no-listings {
     margin: 3rem 3rem;
+}
+
+.no-text-decoration {
+    text-decoration: none;
+}
+
+.listing-content {
+    display:flex; 
+    justify-content: center; 
+    margin: 50px 0px
+}
+
+.listing-content:hover {
+    color: #7A9E7E;
+}
+
+.center-content {
+    display:flex; 
+    justify-content: center; 
+    align-items: center;
+}
+
+hr.hr-listing {
+    border: 1px solid #7A9E7E;
+    width: 90%;
 }
