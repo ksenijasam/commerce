@@ -3,7 +3,7 @@
 {% block body %}
 <div class="row listing-content">
     <div class="col-md-10">
-        
+
         <h1>{{ listing.title }}</h1>
 
         <p>{{ listing.description }}</p>
@@ -14,37 +14,43 @@
 
 
         {% if user.is_authenticated %}
-            {% if its_creator %}
-                <div class="margin-top-10">
-                    <a href="{% url 'close_listing' listing.pk %}">
-                        <button class="btn btn-info" type="button">Close this Listing</button>
-                    </a>
-                </div>
-            {% endif %}
 
-            {% if on_watchlist %}
-                <div class="margin-top-10">
-                    <a href="{%url 'watchlist' listing.pk 'delete'%}"><button type="button" class="btn btn-danger">Remove from
-                            Watchlist</button></a>
+            <div class="row">
+                <div class="col-md-2">
+                    {% if its_creator %}
+                        <div class="margin-top-10">
+                            <a href="{% url 'close_listing' listing.pk %}">
+                                <button class="btn btn-info" type="button">Close this Listing</button>
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
-            {% elif not on_watchlist %}
-                <div class="margin-top-10">
-                    <a href="{%url 'watchlist' listing.pk 'add'%}"><button type="button" class="btn btn-success">Add to
-                            Watchlist</button></a>
-                </div>
-            {% endif %}
 
+                {% if on_watchlist %}
+                    <div class="margin-top-10 col-md-3">
+                        <a href="{%url 'watchlist' listing.pk 'delete'%}"><button type="button" class="btn btn-danger">Remove from
+                                Watchlist</button></a>
+                    </div>
+                {% elif not on_watchlist %}
+                    <div class="margin-top-10 col-md-3">
+                        <a href="{%url 'watchlist' listing.pk 'add'%}"><button type="button" class="btn btn-success">Add to
+                                Watchlist</button></a>
+                    </div>
+                {% endif %}
+
+            </div>
+            
             <div>
                 {% for bid in bids %}
                 <div> {{ bid.bid }} bid placed by {{ bid.user }} </div>
                 {% endfor %}
             </div>
 
-            <form action="{% url 'bid' listing.pk %}" method="post">
+            <form action="{% url 'bid' listing.pk %}" method="post" class="margin-top-10">
                 {% csrf_token %}
                 <h3>Bid on this item:</h3>
                 <input type="number" class="form-control" name="bid">
-                <button type="submit" class="btn btn-success">Place a Bid</button>
+                <button type="submit" class="btn btn-success margin-top-10">Place a Bid</button>
             </form>
 
             {% if error_owner %}
