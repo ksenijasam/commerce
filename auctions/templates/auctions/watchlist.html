@@ -2,18 +2,25 @@
 
 {% block body %}
 
-    <h2>Watchlist</h2>
+    <h1 class="center-content">Watchlist</h1>
 
     {% for listing in watchlist_list %} 
         {% if listing.listing.active %}
-            <a href="listing/{{ listing.listing.pk }}" style="text-decoration:none">
-                <div style="margin: 2rem 0rem; border: 1px solid gray; color: initial">
-                    <h3>{{ listing.listing.title }}</h3>
-                    <div>{{ listing.listing.description }}</div>
-                    <div>{{ listing.listing.starting_bid }}</div>
-                    <div><img src="{{ listing.listing.url }}" alt="product"></div>
+            <div class="row listing-content">
+                <div class="col-md-10">
+                    <a href="{% url 'listing' listing.pk %}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ listing.listing.title }}</h2>
+                        <div>
+                            <p>{{ listing.listing.description }}</p>
+                            <p>{{ listing.listing.starting_bid }}</p>
+                            <div>
+                                <img src="{{ listing.listing.url }}" alt="product" width='400' height='300'>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </div>
+            <hr class="hr-listing">
         {% endif %}
     {% endfor %}
 
