@@ -9,17 +9,13 @@ body {
     margin: 3rem 3rem;
 }
 
-.no-text-decoration {
-    text-decoration: none;
-}
-
 .listing-content {
     display:flex; 
     justify-content: center; 
     margin: 50px 0px
 }
 
-.listing-content:hover {
+.listing-content:hover, .category:hover {
     color: #7A9E7E;
 }
 
@@ -32,4 +28,8 @@ body {
 hr.hr-listing {
     border: 1px solid #7A9E7E;
     width: 90%;
+}
+
+li {
+    list-style-type: none;
 }

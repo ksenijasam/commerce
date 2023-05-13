@@ -1,12 +1,14 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Categories</h2>
+    <h1 class="center-content">Categories</h1>
 
     {% for category in categories %} 
         <ul>
-            <a href="{% url 'category' category.0 %}">
-                <li>{{ category.1 }}</li>
+            <a href="{% url 'category' category.0 %}" style="text-decoration: none; color: inherit;">
+                <li class="category">
+                    <h2>{{ category.1 }}</h2>
+                </li>
             </a>
         </ul>
     {% endfor %}
