@@ -8,7 +8,7 @@
         {% if listing.listing.active %}
             <div class="row listing-content">
                 <div class="col-md-10">
-                    <a href="{% url 'listing' listing.pk %}" style="text-decoration: none; color: inherit;">
+                    <a href="{% url 'listing' listing.listing.pk %}" style="text-decoration: none; color: inherit;">
                         <h2>{{ listing.listing.title }}</h2>
                         <div>
                             <p>{{ listing.listing.description }}</p>
