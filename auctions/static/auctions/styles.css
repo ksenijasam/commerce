@@ -42,6 +42,10 @@ li {
     margin-top: 30px;
 }
 
+.margin-top-70 {
+    margin-top: 70px;
+}
+
 .error {
     color: #E71D36;
 }
@@ -77,5 +81,21 @@ li {
 .watchlist-button:hover {
     background-color: #009FB7; 
     border: 1px solid #009FB7; 
+    color: white
+}
+
+#id_comment{
+    width: 100%;
+}
+
+.bttns {
+    background-color: #036016; 
+    border: 1px solid #036016; 
+    color: white
+}
+
+.bttns:hover {
+    background-color: #03440C; 
+    border: 1px solid #03440C; 
     color: white
 }
