@@ -55,3 +55,27 @@ li {
     border: 1px solid #A2E3C4; 
     padding: 20px;
 }
+
+.close-listing-button {
+    background-color: #F71735; 
+    border: 1px solid #F71735; 
+    color: white
+}
+
+.close-listing-button:hover {
+    background-color: #6B0504; 
+    border: 1px solid #6B0504; 
+    color: white
+}
+
+.watchlist-button {
+    background-color: #03CEA4; 
+    border: 1px solid #03CEA4; 
+    color: white
+}
+
+.watchlist-button:hover {
+    background-color: #009FB7; 
+    border: 1px solid #009FB7; 
+    color: white
+}
