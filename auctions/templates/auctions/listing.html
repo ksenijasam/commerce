@@ -1,13 +1,13 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<div class="row listing-content">
+<div class="row listing-content-without-hover">
     <div class="col-md-10">
 
         <h1>{{ listing.title }}</h1>
 
-        <p>{{ listing.description }}</p>
-        <p>{{ listing.starting_bid }}</p>
+        <h2>{{ listing.description }}</h2>
+        <h2>{{ listing.starting_bid }}</h2>
         <div>
             <img src="{{ listing.url }}" alt="product" width='400' height='300'>
         </div>
@@ -40,56 +40,66 @@
 
             </div>
             
-            <div>
-                {% for bid in bids %}
-                <div> {{ bid.bid }} bid placed by {{ bid.user }} </div>
-                {% endfor %}
-            </div>
-
-            <form action="{% url 'bid' listing.pk %}" method="post" class="margin-top-10">
-                {% csrf_token %}
-                <h3>Bid on this item:</h3>
-                <input type="number" class="form-control" name="bid">
-                <button type="submit" class="btn btn-success margin-top-10">Place a Bid</button>
-            </form>
-
-            {% if error_owner %}
-                <h3>
-                    Looks like your bid is less than starting value set by owner. <br>
-                    So, uh, consindering that owner might not appreciate that, maybe
-                    place new bid ?
-                </h3>
-            {% elif error_other_user %}
-                <h3>
-                    So, how to put this... Other user made bid larger than one you placed <br>
-                    and it will be hard to convince owner to look at bids lower than that... <br>
-                    Should you try placing higher bid ?
-                </h3>
-            {% endif %}
-
-            <div>
-                {% for comment in comments %}
-                <div>
-                    <p>{{ comment.comment }} by {{ comment.user }}</p>
-                </div>
-                {% endfor %}
-            </div>
-
-            <form action="{% url 'comments' listing.pk %}" method="post">
-                {% csrf_token %}
-                <h2>Leave a Comment!</h2>
-                {% for field in comment_form %}
-                    <div class="form-group">
-                        <div>
-                            {{ field }}
-                        </div>
+            <div class="row margin-top-30">
+                <div class="col-6 bids">
+                    <div class="row margin-top-10">
+                        {% for bid in bids %}
+                            <div class="col-md-10"> <h4> <b>{{ bid.bid }}</b> bid placed by {{ bid.user }} </h4> </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-
-                <div>
-                    <button class="btn btn-primary" type="submit">Comment</button>
+        
+                    <form action="{% url 'bid' listing.pk %}" method="post" class="margin-top-30">
+                        {% csrf_token %}
+                        <h5>Bid on this item:</h5>
+                        <input type="number" class="form-control" name="bid">
+                        <button type="submit" class="btn btn-success margin-top-10">Place a Bid</button>
+                    </form>
+        
+                    <div class="margin-top-30 error error-border">
+                        {% if error_owner %}
+                            <h6>
+                                Looks like your bid is less than starting value set by owner. <br>
+                                So, uh, consindering that owner might not appreciate that, maybe
+                                place new bid ?
+                            </h6>
+                        {% elif error_other_user %}
+                            <h6>
+                                So, how to put this... Other user made bid larger than one you placed
+                                and it will be hard to convince owner to look at bids lower than that... <br>
+                                Should you try placing higher bid ?
+                            </h6>
+                        {% endif %}
+                    </div>
                 </div>
-            </form>
+    
+                <div class="col-6 comments">
+                    <div>
+                        {% for comment in comments %}
+                        <div>
+                            <h4>{{ comment.comment }} by {{ comment.user }}</h4>
+                        </div>
+                        {% endfor %}
+                    </div>
+        
+                    <form action="{% url 'comments' listing.pk %}" method="post" class="margin-top-30">
+                        {% csrf_token %}
+
+                        <h5>Leave a Comment!</h5>
+
+                        {% for field in comment_form %}
+                            <div class="form-group">
+                                <div style="width: 100%">
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% endfor %}
+        
+                        <div>
+                            <button class="btn btn-primary" type="submit">Comment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         {% endif %}
     </div>
 </div>
