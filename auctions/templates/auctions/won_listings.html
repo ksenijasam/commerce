@@ -4,15 +4,23 @@
     <h1>Below you will find list of listings you have won</h1>
     <h1>No won listings for now</h1>
 
-    {% for listing in won_listing %} 
-        <a href="won_listings_details/{{ listing.pk }}" style="text-decoration:none">
-            <div style="margin: 2rem 0rem; border: 1px solid gray; color: initial">
-                <h3>{{ listing.title }}</h3>
-                <div>{{ listing.description }}</div>
-                <div>{{ listing.starting_bid }}</div>
-                <div><img src="{{ listing.url }}" alt="product"></div>
+
+    {% for listing in won_listing %}
+        <div class="row listing-content-without-hover">
+            <div class="col-md-10">
+                <a href="{% url 'won_listings_details' listing.pk %}" style="text-decoration: none; color: inherit;">
+                    <h2>{{ listing.title }}</h2>
+                    <div>
+                        <p>{{ listing.description }}</p>
+                        <p>{{ listing.starting_bid }}</p>
+                        <div>
+                            <img src="{{ listing.url }}" alt="product" width='400' height='300'>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </a>
+        </div>
+        <hr class="hr-listing">
     {% endfor %}
 
 {% endblock %}
