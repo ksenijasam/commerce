@@ -5,7 +5,7 @@
     <h1 class="center-content">Watchlist</h1>
 
     {% for listing in watchlist_list %} 
-        {% if listing.listing.active %}
+        {% if listing.listing.active and watchlist_list.count > 0 %}
             <div class="row listing-content">
                 <div class="col-md-10">
                     <a href="{% url 'listing' listing.listing.pk %}" style="text-decoration: none; color: inherit;">
@@ -21,6 +21,8 @@
                 </div>
             </div>
             <hr class="hr-listing">
+        {% else %}
+            <h1 class="center-content margin-top-70"> No watched listings. </h1>
         {% endif %}
     {% endfor %}
 
