@@ -267,11 +267,14 @@ def comments(request, id):
 
         its_creator = check_is_creator(request, listing)
 
+        bids = Bids.objects.all().filter(listing = listing)
+
         return render(request, "auctions/listing.html", {
             'listing': listing,
             'comment_form': CommentsForm(),
             'comments': comments,
-            'its_creator': its_creator
+            'its_creator': its_creator,
+            'bids': bids
         })
 
 
