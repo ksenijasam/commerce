@@ -1,10 +1,13 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h1 class="center-content">Active Listings</h1>
 
-    {% if no_listings %}
+    {% if listings.count == 0 %}
+        <h1 class="center-content margin-top-70"> No active listings. </h1>
+    {% elif no_listings %} 
         <h1 class="no-listings">{{no_listings}}</h1>
+    {% else %}
+        <h1 class="center-content">Active Listings</h1>
     {% endif %}
 
     {% for listing in listings %}
