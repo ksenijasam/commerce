@@ -138,6 +138,8 @@ def watchlist(request, id, action):
 
         its_creator = check_is_creator(request, listing)
 
+        comments = Comments.objects.all().filter(listing = listing)
+
         if action == 'add':
             watchlist.user = user
             watchlist.listing = listing
@@ -147,7 +149,8 @@ def watchlist(request, id, action):
                 'on_watchlist': True,
                 'bids': bids,
                 'comment_form': CommentsForm(),
-                'its_creator': its_creator
+                'its_creator': its_creator,
+                'comments': comments
             })
 
         elif action == 'delete':
@@ -157,7 +160,8 @@ def watchlist(request, id, action):
                 'on_watchlist': False,
                 'bids': bids,
                 'comment_form': CommentsForm(),
-                'its_creator': its_creator
+                'its_creator': its_creator,
+                'comments': comments
             })
 
         return HttpResponseRedirect('/')
