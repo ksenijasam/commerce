@@ -1,25 +1,27 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Create Your Listing</h2>
+    <h2 class="center-content">Create Your Listing</h2>
 
-    <form action="/create_listing" method="post">
-        {% csrf_token %}
-        
-        {% for field in form %}
-            <div class="form-group">
-                <div>
-                    {{ field.label_tag }}
+    <div class="margin-left-20-percent">
+        <form action="/create_listing" method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    <div>
+                        {{ field.label_tag }}
+                    </div>
+                    <div>
+                        {{ field }}
+                    </div>
                 </div>
-                <div>
-                    {{ field }}
-                </div>
+            {% endfor %}
+    
+            <div>
+                <button class="btn btn-primary" type="submit">Send</button>
             </div>
-        {% endfor %}
-
-        <div>
-            <button class="btn btn-primary" type="submit">Send</button>
-        </div>
-    </form>
+        </form>
+    </div>
 
 {% endblock %}

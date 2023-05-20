@@ -46,6 +46,10 @@ li {
     margin-top: 70px;
 }
 
+.margin-left-20-percent {
+    margin-left: 20%;
+}
+
 .error {
     color: #E71D36;
 }
@@ -98,4 +102,8 @@ li {
     background-color: #03440C; 
     border: 1px solid #03440C; 
     color: white
+}
+
+input, textarea, select {
+    width: 80%;
 }
