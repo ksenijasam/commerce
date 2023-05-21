@@ -4,74 +4,83 @@
 <div class="row listing-content-without-hover">
     <div class="col-md-10">
 
-        {% if user.is_authenticated %}
-            <div class="row">
-                <div class="col-md-6">
-                    <h1>{{ listing.title }}</h1>
 
-                    <h2>{{ listing.description }}</h2>
-                    <h2>{{ listing.starting_bid }}</h2>
-                    <div>
-                        <img src="{{ listing.url }}" alt="product" width='400' height='300'>
+        <div class="row">
+            <div class="col-md-6">
+                <h1>{{ listing.title }}</h1>
+
+                <h2 class="margin-top-10">Description: {{ listing.description }}</h2>
+                <h2 class="margin-top-10">Starting bid: {{ listing.starting_bid }}</h2>
+                {% if max_bid %} 
+                    <div style="border: 1px solid white; width: fit-content; padding: 0 10px" class="margin-top-10">
+                        <h2> Current price: {{ max_bid }} </h2>
                     </div>
+                {% endif %}
+                <div class="margin-top-10">
+                    <img src="{{ listing.url }}" alt="product" width='400' height='300'>
+                </div>
+                {% if user.is_authenticated %}
                     <div class="row">
                         <div class="col-md-4">
                             {% if its_creator %}
-                                <div class="margin-top-10">
-                                    <a href="{% url 'close_listing' listing.pk %}">
-                                        <button class="btn btn-info close-listing-button" type="button">Close this Listing</button>
-                                    </a>
-                                </div>
+                            <div class="margin-top-10">
+                                <a href="{% url 'close_listing' listing.pk %}">
+                                    <button class="btn btn-info close-listing-button" type="button">Close this
+                                        Listing</button>
+                                </a>
+                            </div>
                             {% endif %}
                         </div>
-        
+
                         {% if on_watchlist %}
-                            <div class="margin-top-10 col-md-5">
-                                <a href="{%url 'watchlist' listing.pk 'delete'%}">
-                                    <button type="button" class="btn btn-danger">
-                                        Remove from Watchlist
-                                    </button>
-                                </a>
-                            </div>
+                        <div class="margin-top-10 col-md-5">
+                            <a href="{%url 'watchlist' listing.pk 'delete'%}">
+                                <button type="button" class="btn btn-danger">
+                                    Remove from Watchlist
+                                </button>
+                            </a>
+                        </div>
                         {% elif not on_watchlist %}
-                            <div class="margin-top-10 col-md-5">
-                                <a href="{%url 'watchlist' listing.pk 'add'%}">
-                                    <button type="button" class="btn btn-success watchlist-button">
-                                        Add to Watchlist
-                                    </button>
-                                </a>
-                            </div>
+                        <div class="margin-top-10 col-md-5">
+                            <a href="{%url 'watchlist' listing.pk 'add'%}">
+                                <button type="button" class="btn btn-success watchlist-button">
+                                    Add to Watchlist
+                                </button>
+                            </a>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
 
-                <div class="col-6 bids">
-                    <div class="row margin-top-10">
-                        {% for bid in bids %}
-                            <div class="col-md-10"> <h4> <b>{{ bid.bid }}</b> bid placed by {{ bid.user }} </h4> </div>
-                        {% endfor %}
-                    </div>
-        
-                    <form action="{% url 'bid' listing.pk %}" method="post" class="margin-top-10">
-                        {% csrf_token %}
-                        <p>Bid on this item:</p>
-                        <input type="number" class="form-control" name="bid">
-                        
-                        <div class="margin-top-30">
-                            <button type="submit" class="btn btn-success bttns">Place a Bid</button>
+                    <div class="col-6 bids">
+                        <div class="row margin-top-10">
+                            {% for bid in bids %}
+                            <div class="col-md-10">
+                                <h4> <b>{{ bid.bid }}</b> bid placed by {{ bid.user }} </h4>
+                            </div>
+                            {% endfor %}
                         </div>
-                    </form>
-        
-                    <div>
-                        {% if error_owner %}
-                        <div class="margin-top-30 error error-border">
-                            <h6>
-                                Looks like your bid is less than starting value set by owner. <br>
-                                So, uh, consindering that owner might not appreciate that, maybe
-                                place new bid ?
-                            </h6>
-                        </div>
-                        {% elif error_other_user %}
+
+                        <form action="{% url 'bid' listing.pk %}" method="post" class="margin-top-10">
+                            {% csrf_token %}
+                            <p>Bid on this item:</p>
+                            <input type="number" class="form-control" name="bid">
+
+                            <div class="margin-top-30">
+                                <button type="submit" class="btn btn-success bttns">Place a Bid</button>
+                            </div>
+                        </form>
+
+                        <div>
+                            {% if error_owner %}
+                            <div class="margin-top-30 error error-border">
+                                <h6>
+                                    Looks like your bid is less than starting value set by owner. <br>
+                                    So, uh, consindering that owner might not appreciate that, maybe
+                                    place new bid ?
+                                </h6>
+                            </div>
+                            {% elif error_other_user %}
                             <div class="margin-top-30 error error-border">
                                 <h6>
                                     So, how to put this... Other user made bid larger than one you placed
@@ -79,11 +88,11 @@
                                     Should you try placing higher bid ?
                                 </h6>
                             </div>
-                        {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-12 comments margin-top-70">
                     <div>
@@ -93,20 +102,20 @@
                         </div>
                         {% endfor %}
                     </div>
-        
+
                     <form action="{% url 'comments' listing.pk %}" method="post" class="margin-top-30">
                         {% csrf_token %}
 
                         <p>Leave a Comment!</p>
 
                         {% for field in comment_form %}
-                            <div class="form-group">
-                                <div>
-                                    {{ field }}
-                                </div>
+                        <div class="form-group">
+                            <div>
+                                {{ field }}
                             </div>
+                        </div>
                         {% endfor %}
-        
+
                         <div>
                             <button class="btn btn-primary bttns" type="submit">Comment</button>
                         </div>

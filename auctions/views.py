@@ -110,6 +110,8 @@ def listing(request, id):
 
         its_creator = check_is_creator(request, listing)
 
+        max_bid = bids.aggregate(Max('bid'))['bid__max']
+
         if Watchlist.objects.filter(listing = listing).exists() and request.user == listing.user:
             return render(request, "auctions/listing.html", {
                 'listing': listing,
@@ -117,7 +119,8 @@ def listing(request, id):
                 'bids': bids,
                 'its_creator': its_creator,
                 'comment_form': comment_form,
-                'comments': comments
+                'comments': comments,
+                'max_bid': max_bid
             })
         else:
             return render(request, "auctions/listing.html", {
@@ -126,7 +129,8 @@ def listing(request, id):
                 'bids': bids,
                 'its_creator': its_creator,
                 'comment_form': comment_form,
-                'comments': comments
+                'comments': comments,
+                'max_bid': max_bid
             })
 
 def watchlist(request, id, action):
